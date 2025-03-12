@@ -2,13 +2,16 @@
 class Stack: 
     tail = -1 
     array = [0]
+    def printarray(self):
+        print(self.array)
     def __init__(self, capacidade):
         self.array = [0 for x in range (capacidade)]
     def pop(self):
         if(self.isEmpty()):
             raise TypeError("Only integers are allowed")
-        V= self.array[self.tail]
-        self.tail+=-1
+        aux_tail = self.tail
+        V= self.array[aux_tail]
+        self.tail +=-1
         return V
     def isEmpty(self):
        if(self.tail<0):
@@ -33,22 +36,31 @@ class Stack:
             raise TypeError("Only integers are allowed")
         self.tail+=1
         self.array[self.tail] = valor
-    def esquerda(valor):
-      for i in range(valor,len(self.array)):
-         self.array[i-1] = self.array[i]
-    def direita(valor):
-      for i in range((len(self.array))-1,valor):
+    def esquerda(self, valor):
+      for i in range(valor, self.tail+1):
+         self.array[i] = self.array[i+1]
+    def direita(self, valor):
+      for i in range(self.tail , valor,-1):
          self.array[i+1] = self.array[i]
     def removeLast(self):
-      esquerda(1)
+      self.esquerda(0)
       self.tail+=-1
-    def removeIndex(index):
-      esquerda (index)
+    def removeIndex(self, index):
+      self.esquerda(index)
       self.tail+=-1
-    def pushIndex(index):
-        direita(index)
-        self.index+=1
+    def pushFirst(self, valor):
+        self.tail+= 1
+        self.direita(-1)
+        self.array[0] = valor
+    def pushIndex(self, valor, index):
+        if(index>self.tail):
+            raise TypeError("Only integers are allowed")
+        self.direita(index)
+        self.tail+=1
+        self.array[index] = valor
     def peek(self,index):
+        if(index>self.tail):
+            raise TypeError("Only integers are allowed")
         return self.array[index]
     def size(self):
         return self.tail+1
@@ -64,9 +76,11 @@ class main:
    stack1 = Stack(9)
    stack1.push(1)
    stack1.push(6)
-   stack1.pop()
+   stack1.printarray()
+   stack1.pushIndex(2,1)
+   stack1.printarray()
    stack1.push(4)
    print(stack1.size())
    print(stack1.indexOf(4))
-   print(stack1.peek(1))
+   print(stack1.peek(0))
    print(stack1.toString())
